@@ -1,6 +1,6 @@
-<h1>ExpNo 5 : Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game</h1> 
-<h3>Name:           </h3>
-<h3>Register Number/Staff Id:          </h3>
+<h1>ExpNo  : Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game</h1> 
+<h3>Name: Bhuvaneshwaran TU          </h3>
+<h3>Register Number: 212224040049          </h3>
 <H3>Aim:</H3>
 <p>
     Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game
@@ -101,7 +101,132 @@ def minimax(game)
         return scores[min_score_index]
     end
 end
+<h2> Program: </h2>
 
+```py
+
+board = [' ' for _ in range(9)]
+
+def display_board():
+    print()
+    for i in range(0, 9, 3):
+        print(" | ".join(board[i:i+3]))
+        if i < 6:
+            print("---+---+---")
+    print()
+
+def check_winner(player):
+    winning_positions = [
+        (0, 1, 2), (3, 4, 5), (6, 7, 8),
+        (0, 3, 6), (1, 4, 7), (2, 5, 8),
+        (0, 4, 8), (2, 4, 6)
+    ]
+
+    for a, b, c in winning_positions:
+        if board[a] == board[b] == board[c] == player:
+            return True
+    return False
+
+def is_game_over():
+    return check_winner('X') or check_winner('O') or ' ' not in board
+
+def minimax(is_maximizing):
+    if check_winner('O'):
+        return 10
+
+    if check_winner('X'):
+        return -10
+
+    if ' ' not in board:
+        return 0
+
+    if is_maximizing:
+        best_score = -float('inf')
+
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'O'
+                score = minimax(False)
+                board[i] = ' '
+                best_score = max(score, best_score)
+
+        return best_score
+
+    else:
+        best_score = float('inf')
+
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'X'
+                score = minimax(True)
+                board[i] = ' '
+                best_score = min(score, best_score)
+
+        return best_score
+
+def best_move():
+    best_score = -float('inf')
+    move = -1
+
+    for i in range(9):
+        if board[i] == ' ':
+            board[i] = 'O'
+            score = minimax(False)
+            board[i] = ' '
+
+            if score > best_score:
+                best_score = score
+                move = i
+
+    return move
+
+def play_game():
+    print("WELCOME TO TIC-TAC-TOE")
+    print("You are X and Computer is O")
+
+    print("\n 1 | 2 | 3")
+    print("---+---+---")
+    print(" 4 | 5 | 6")
+    print("---+---+---")
+    print(" 7 | 8 | 9")
+
+    while not is_game_over():
+        display_board()
+
+        try:
+            position = int(input("Enter your position (1-9): ")) - 1
+
+            if position < 0 or position > 8 or board[position] != ' ':
+                print("Invalid move! Try again.")
+                continue
+
+            board[position] = 'X'
+
+        except ValueError:
+            print("Please enter a valid number.")
+            continue
+
+        if is_game_over():
+            break
+
+        print("\nComputer is thinking...")
+        move = best_move()
+
+        if move != -1:
+            board[move] = 'O'
+            print("Computer chooses position:", move + 1)
+
+    display_board()
+
+    if check_winner('X'):
+        print("Congratulations! You Win!")
+    elif check_winner('O'):
+        print("Computer Wins!")
+    else:
+        print("Game Draw!")
+    play_game()
+
+```
 <hr>
 <h2>Sample Input and Output</h2>
 
@@ -110,6 +235,9 @@ end
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/dc06427a-d4ce-43a1-95bd-9acfaefac323)
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/a8a27e2a-6fd4-46a2-afb5-6d27b8556702)
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/a2acb6a1-ed8e-42e5-8968-fe805e4b0255)
+<img width="326" height="570" alt="image" src="https://github.com/user-attachments/assets/89f7c599-7f5c-4d7c-ba3f-b4c07791a8d2" />
+<img width="335" height="435" alt="image" src="https://github.com/user-attachments/assets/1a5d9071-a2cf-4b79-a3f3-2785cf2f6172" />
+<img width="316" height="648" alt="image" src="https://github.com/user-attachments/assets/df620509-594b-4385-aa0c-c3b75f838bfa" />
 
 <hr>
 <h2>Result:</h2>
